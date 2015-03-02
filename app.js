@@ -6,7 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+
+//@todo delete
+// var users = require('./routes/users');
 
 var app = express();
 
@@ -22,8 +24,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+//@todo delete
+// app.use('/', routes);
+// app.use('/users', users);
+
+routes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -57,4 +62,16 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+
+var debug = require('debug')('my-application'); // debug模块
+app.set('port', process.env.PORT || 3000); // 设定监听端口
+
+// Environment sets...
+
+// 这是 4.x 默认的配置，分离了 app 模块,将它注释即可，上线时可以重新改回来
+// module.exports = app; 
+
+//启动监听
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
